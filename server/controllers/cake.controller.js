@@ -75,35 +75,105 @@ export const deleteAllCake = async(req, res) => {
     res.status(500).json({ error: "Something went wrong" });
   }
 }
-export const updateCake = async (req, res) => {
-  const {cakeName, price, description, quantity} = req.body;
-  const {images} = req.body;
-  const cakeId = req.params.id;
-  try {
-      let cake = await Cake.findById(cakeId);
-      if(!cake) {
-          return res.status(404).json({ message: "Cake not found" });
-      }
+// export const updateCake = async (req, res) => {
+//   const { cakeName, price, description, quantity, images } = req.body;
+//   const cakeId = req.params.id;
+//   console.log("Cake ID received:", cakeId); // Debug ID
+//   if (!cakeId) {
+//     return res.status(400).json({ message: "Cake ID is missing" });
+//   }
+//   try {
+//     // Tìm bánh theo ID
+//     let cake = await Cake.findById(cakeId);
+//     if (!cake) {
+//       return res.status(404).json({ message: "Cake not found" });
+//     }
 
-      if(images) {
-          const promises = images.map(image => cloudinary.uploader.upload(image));
-          const results = await Promise.all(promises);
-          req.body.images = results.map(result => result.secure_url);
-      }
-      cake.cakeName = cakeName || cake.cakeName;
-      cake.price = price || cake.price;
-      cake.quantity = quantity || cake.quantity;
+//     // Nếu có hình ảnh mới, upload lên Cloudinary
+//     if (images && images.length > 0) {
+//       const promises = images.map((image) => cloudinary.uploader.upload(image));
+//       const results = await Promise.all(promises);
+//       req.body.images = results.map((result) => result.secure_url);
+//     }
+
+//     // Cập nhật các trường thông tin
+//     cake.cakeName = cakeName || cake.cakeName;
+//     cake.price = price || cake.price;
+//     cake.quantity = quantity || cake.quantity;
+//     cake.description = description || cake.description;
+//     if (req.body.images) {
+//       cake.images = req.body.images; // Cập nhật hình ảnh
+//     }
+
+//     // Lưu lại thay đổi
+//     await cake.save();
+
+//     res.status(200).json(cake);
+//     console.log("Request received:", req.body);
+//   } catch (error) {
+//     console.error("Error in updateCake controller: ", error);
+//     res.status(500).json({ message: "Internal Server error" });
+//   }
+// };
+
+// export const updateCake = async (req, res) => {
+//   const {cakeName, price, description, quantity} = req.body;
+//   const {images} = req.body;
+//   const cakeId = req.params.id;
+//   try {
+//       let cake = await Cake.findById(cakeId);
+//       if(!cake) {
+//           return res.status(404).json({ message: "Cake not found" });
+//       }
+
+//       if(images) {
+//           const promises = images.map(image => cloudinary.uploader.upload(image));
+//           const results = await Promise.all(promises);
+//           req.body.images = results.map(result => result.secure_url);
+//       }
+//       cake.cakeName = cakeName || cake.cakeName;
+//       cake.price = price || cake.price;
+//       cake.quantity = quantity || cake.quantity;
       
-      cake.description = description || cake.description;
+//       cake.description = description || cake.description;
 
-      await cake.save();
+//       await cake.save();
 
-      res.status(200).json(cake);
-  } catch(error) {
-      console.log("Error in updateCake controller: ", error);
-      res.status(500).json({ message: "Internal Server error" });
+//       res.status(200).json(cake);
+//   } catch(error) {
+//       console.log("Error in updateCake controller: ", error);
+//       res.status(500).json({ message: "Internal Server error" });
+//   }
+// }
+// Cập nhật thông tin bánh
+export const updateCake = async (req, res) => {
+  const { cakeName, price, description, quantity, images } = req.body; // Nhận dữ liệu từ client
+  const cakeId = req.params.id;
+
+  try {
+    let cake = await Cake.findById(cakeId);
+    if (!cake) {
+      return res.status(404).json({ message: "Cake not found" });
+    }
+    if (images) {
+      const uploadPromises = images.map((image) => cloudinary.uploader.upload(image));
+      const uploadResults = await Promise.all(uploadPromises);
+      req.body.images = uploadResults.map((result) => result.secure_url);
+    }
+    cake.cakeName = cakeName || cake.cakeName;
+    cake.price = price || cake.price;
+    cake.quantity = quantity || cake.quantity;
+    cake.description = description || cake.description;
+    if (req.body.images) {
+      cake.images = req.body.images; 
+    }
+    await cake.save();
+    res.status(200).json(cake);
+  } catch (error) {
+    console.error("Error in updateCake controller:", error);
+    res.status(500).json({ message: "Internal Server Error" });
   }
-}
+};
 export const findCake = async (req, res) => {
   try {
       const searchTerm = req.query.search.toLowerCase(); 

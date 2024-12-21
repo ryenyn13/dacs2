@@ -3,9 +3,60 @@ import vou1 from "../../assets/voucher/vou1.png";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSquareMinus } from "react-icons/ci";
 import { CiTrash } from "react-icons/ci";
+import { useRef } from "react";
+import { HiOutlineChevronLeft } from "react-icons/hi2";
+import { HiOutlineChevronRight } from "react-icons/hi2";
+import { useState } from "react";
 
 const BestSellers = () => {
- 
+  const [activeIndex, setActiveIndex] = useState(0); // Lưu index của ô đang được chọn
+
+  const cakes = [
+    {
+      id: 1,
+      name: "Tiramisu",
+      description:
+        "Tiramisu is a classic Italian dessert made with soft ladyfingers soaked in rich espresso, layered with creamy mascarpone cheese and topped with a dusting of cocoa powder. It offers a perfect balance of sweetness and bold coffee flavor.",
+      image: "https://placehold.co/150x100",
+    },
+    {
+      id: 2,
+      name: "Matcha Cake",
+      description:
+        "Matcha Cake features soft, fluffy layers infused with premium green tea powder, combined with sweet red bean paste and fresh cream. Topped with a fresh strawberry and chocolate decorations, it’s a refreshing treat for matcha lovers.",
+      image: "https://placehold.co/150x100",
+    },
+    {
+      id: 3,
+      name: "Americano Roll",
+      description:
+        "The Americano Roll is a soft and spongy cake roll filled with creamy caramel-flavored filling, inspired by the rich and bold taste of Americano coffee. It’s a delightful dessert for any occasion.",
+      image: "https://placehold.co/150x100",
+    },
+    {
+      id: 4,
+      name: "Red Velvet",
+      description:
+        "Red Velvet is a visually stunning cake with vibrant red layers, velvety texture, and a hint of cocoa flavor. It’s paired with smooth cream cheese frosting, creating a perfect balance of sweetness and tanginess.",
+      image: "https://placehold.co/150x100",
+    },
+  ];
+
+  const scrollLeft = () => {
+    if (activeIndex > 0) {
+      setActiveIndex(activeIndex - 1);
+    }
+  };
+
+
+  const scrollRight = () => {
+    if (activeIndex < cakes.length - 1) {
+      setActiveIndex(activeIndex + 1);
+    }
+    else {
+      setActiveIndex(0);
+    }
+  };
   return (
     <section className="bg-white flex w-ful flex-col mt-10">
       <div className="flex w-full justify-between text-black text-2xl font-semibold items-center">
@@ -20,58 +71,56 @@ const BestSellers = () => {
           </p>
         </div>
       </div>
-      <div className="mt-16 flex mx-auto w-full space-x-10">
-        <div className="bg-[#41759B] w-[250px] h-[300px] rounded-xl">
+      <div className="mt-16 flex mx-auto w-full ml-[65px] space-x-8 relative">
+      <button
+        className="absolute mt-[130px] -left-[60px] z-10 w-[30px] scale-[2] text-black pl-3"
+        onClick={scrollLeft}
+      >
+        <HiOutlineChevronLeft />
+      </button>
+
+      {cakes.map((cake, index) => (
+       <div
+       key={cake.id}
+       className={`w-[200px] h-[250px]  rounded-xl transition-all duration-300 ${
+         activeIndex === index ? "bg-[#41759B] z-10" : "bg-[#D9D9D9] z-0"
+       }`}
+       style={{
+         transformOrigin: "center",
+         transform: `
+           scale(${activeIndex === index ? 1.25 : 1}) 
+           translateX(${activeIndex > index ? "-10px" : activeIndex < index ? "10px" : "0"})`,
+       }}
+     >
           <div className="px-5 flex flex-col items-start">
             <img
-              src="https://placehold.co/150x60"
+              src={cake.image}
+              alt={cake.name}
               className="mt-5 flex my-auto px-5"
-            ></img>
-            <p className="mt-5 text-2xl font-bold text-white">Tiramisu</p>
-            <p className="text-[13px] text-gray-300 font-thin mt-2">
-              Lorem ispum Lorem ispum Lorem ispum Lorem ispum Lorem ispum Lorem
-              ispum Lorem ispum Lorem ispum Lorem ispum Lorem ispum
+            />
+            <p className="flex mt-2 text-2xl font-semibold text-center text-white">{cake.name}</p>
+            <p className="text-[10px] text-gray-300 font-thin mt-2">
+              {cake.description}
             </p>
             <div className="flex w-full justify-between text-white text-[14px] mt-1">
-              <p className="font-thin">20 ML</p>
-              <p className="font-bold mt-1">IDK 25k</p>
+              <p className="font-thin">{cake.weight}</p>
+              <p className="font-bold mt-1">{cake.price}</p>
             </div>
           </div>
         </div>
+      ))}
 
-        <div className="bg-[#D9D9D9] w-[200px] h-[250px] rounded-xl mt-8">
-          <div className="px-5 flex flex-col items-start">
-            <p className="mt-7 text-2xl font-bold text-[#65594C]">Tiramisu</p>
-            <p className="text-[13px] text-[#65594C] font-thin mt-2">
-              Lorem ispum Lorem ispum Lorem ispum Lorem ispum Lorem ispum Lorem
-              ispum Lorem ispum Lorem ispum Lorem ispum Lorem ispum
-            </p>
-            <div className="flex w-full justify-between text-white text-[14px] mt-5">
-              <p className="font-thin">20 ML</p>
-              <p className="font-bold mt-7">IDK 25k</p>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-[#D9D9D9] w-[200px] h-[250px] rounded-xl mt-8">
-          <div className="px-5 flex flex-col items-start">
-            <p className="mt-7 text-2xl font-bold text-[#65594C]">Tiramisu</p>
-            <p className="text-[13px] text-[#65594C] font-thin mt-2">
-              Lorem ispum Lorem ispum Lorem ispum Lorem ispum Lorem ispum Lorem
-              ispum Lorem ispum Lorem ispum Lorem ispum Lorem ispum
-            </p>
-            <div className="flex w-full justify-between text-white text-[14px] mt-5">
-              <p className="font-thin">20 ML</p>
-              <p className="font-bold mt-10">IDK 25k</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
+      <button
+        className="absolute mt-[130px] right-12 z-10 w-[30px] scale-[2] text-black"
+        onClick={scrollRight}
+      >
+        <HiOutlineChevronRight />
+      </button>
+    </div>
+      
       <div class=" w-full h-[450px] mt-20  items-center">
         <img src={vou1} className="w-full h-full" />
       </div>
-
       <div className="flex w-full bg-[#F5F5F5]">
         <div className="flex w-full mt-16 flex-col">
           <p className="ml-20 text-black text-left text-2xl font-semibold">
