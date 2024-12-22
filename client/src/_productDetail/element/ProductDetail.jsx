@@ -236,7 +236,7 @@ const ProductDetail = () => {
                 
                 <button
                   className="flex bg-gray-500 text-white px-3 py-2 rounded-sm shadow hover:bg-gray-600 transition"
-                  onClick={handleAddToCart}
+                  onClick={() => handleAddToCart}
                 >
                   Add to Cart
                 </button>

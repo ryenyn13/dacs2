@@ -20,6 +20,7 @@ import { TailSpin } from "react-loader-spinner";
 import { FaSearch } from "react-icons/fa";
 
 const Products = () => {
+  
   // useEffect(() => {
   //   const slides = document.querySelectorAll(".slide");
   //   let currentIndex = 0;
@@ -121,11 +122,11 @@ const Products = () => {
   return (
     <section className="w-full bg-white">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
-      <h1 className="flex justify-center py-[40px] text-2xl font-bold text-[#65594C]">
+      <h1 className="flex justify-center py-[30px] text-2xl font-bold text-[#65594C]">
         Catalog
       </h1>
       <div className="w-full flex items-center space-x-[200px]">
-        <div className=" ml-[200px]  flex text-gray-400 text-[15px] font-bold   space-x-[50px] items-center">
+        <div className=" ml-[200px] mt-1 flex text-gray-400 text-[15px] font-bold   space-x-[50px] items-center">
           <p className=" text-black">ALL</p>
           <p>CHILLED DESSERT</p>
           <p>SET</p>
@@ -158,44 +159,47 @@ const Products = () => {
         </div>
       </div>
       <div className="space-y-2">
-        <div className="mt-1 flex justify-center w-full space-x-5 flex-cols-4">
-          {isLoading && (
-            <div className="justify-center items-center flex w-full">
-              <TailSpin
-                visible={true}
-                height="50"
-                width="50"
-                color="#4fa94d"
-                ariaLabel="tail-spin-loading"
-                radius="1"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
-            </div>
-          )}
-          {products &&
-            products.map((product) => (
-              <Link to={`/productdetail/${product._id}`}>
-                <div className=" w-[220px] h-auto">
-                  <div className="w-full flex flex-col items-center mb-4">
-                    <img
-                      src={
-                        product.images[0]
-                          ? product.images[0]
-                          : "https://placehold.co/200x220"
-                      }
-                      className="mt-7 flex px-[2px] w-[200px] h-[220px] object-cover"
-                    ></img>
-                    <p className="flex items mt-[10px] text-[15px] font-bold text-[#65594C]">
-                      {product.cakeName}
-                    </p>
-                    <p className="flex text-[11px] text-[#65594C] font-thin mt-[5px] ">
-                      {product.price} VND
-                    </p>
+        <div className="mt-5 flex px-[100px] justify-center w-full ">
+          <div className="grid-cols-4 gap-x-6 mt-3 grid">
+            {isLoading && (
+              <div className="justify-center items-center flex w-full">
+                <TailSpin
+                  visible={true}
+                  height="50"
+                  width="50"
+                  color="#4fa94d"
+                  ariaLabel="tail-spin-loading"
+                  radius="1"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              </div>
+            )}
+            {products &&
+              products.map((product) => (
+                <Link to={`/productdetail/${product._id}`}>
+                  <div className=" w-[220px] h-auto">
+                    <div className="w-full flex flex-col items-center mb-4">
+                      <img
+                        src={
+                          product.images[0]
+                            ? product.images[0]
+                            : "https://placehold.co/200x220"
+                        }
+                        className="mt-7 flex px-[2px] w-[200px] h-[220px] object-cover"
+                      ></img>
+                      <p className="flex items mt-[10px] text-[15px] font-bold text-[#65594C]">
+                        {product.cakeName}
+                      </p>
+                      <p className="flex text-[11px] text-[#65594C] font-thin mt-[5px] ">
+                        {product.price} VND
+                      </p>
+                    </div>
                   </div>
-                </div>
-              </Link>
-            ))}
+                </Link>
+              ))}
+          </div>
+         
         </div>
       </div>
     </section>

@@ -1,5 +1,9 @@
 import React from "react";
 import vou1 from "../../assets/voucher/vou1.png";
+import TiramisuNoBg from "../../assets/bestseller/TiramisuNoBg.png";
+import MatchaCakeNoBg from "../../assets/bestseller/MatchaNoBg.png";
+import RollNoBg from "../../assets/bestseller/RollNoBg.png";
+import RedvelvetNoBg from "../../assets/bestseller/RedvelvetNoBg.png";
 import { CiSquarePlus } from "react-icons/ci";
 import { CiSquareMinus } from "react-icons/ci";
 import { CiTrash } from "react-icons/ci";
@@ -17,28 +21,36 @@ const BestSellers = () => {
       name: "Tiramisu",
       description:
         "Tiramisu is a classic Italian dessert made with soft ladyfingers soaked in rich espresso, layered with creamy mascarpone cheese and topped with a dusting of cocoa powder. It offers a perfect balance of sweetness and bold coffee flavor.",
-      image: "https://placehold.co/150x100",
+      image: TiramisuNoBg,
+      width: "150px",
+      height: "145px",
     },
     {
       id: 2,
       name: "Matcha Cake",
       description:
         "Matcha Cake features soft, fluffy layers infused with premium green tea powder, combined with sweet red bean paste and fresh cream. Topped with a fresh strawberry and chocolate decorations, it’s a refreshing treat for matcha lovers.",
-      image: "https://placehold.co/150x100",
+      image: MatchaCakeNoBg,
+      width: "150px",
+      height: "140px",
     },
     {
       id: 3,
       name: "Americano Roll",
       description:
         "The Americano Roll is a soft and spongy cake roll filled with creamy caramel-flavored filling, inspired by the rich and bold taste of Americano coffee. It’s a delightful dessert for any occasion.",
-      image: "https://placehold.co/150x100",
+      image: RollNoBg,
+      width: "150px",
+      height: "140px",
     },
     {
       id: 4,
       name: "Red Velvet",
       description:
         "Red Velvet is a visually stunning cake with vibrant red layers, velvety texture, and a hint of cocoa flavor. It’s paired with smooth cream cheese frosting, creating a perfect balance of sweetness and tanginess.",
-      image: "https://placehold.co/150x100",
+      image: RedvelvetNoBg,
+      width: "135px",
+      height: "140px",
     },
   ];
 
@@ -48,17 +60,15 @@ const BestSellers = () => {
     }
   };
 
-
   const scrollRight = () => {
     if (activeIndex < cakes.length - 1) {
       setActiveIndex(activeIndex + 1);
-    }
-    else {
+    } else {
       setActiveIndex(0);
     }
   };
   return (
-    <section className="bg-white flex w-ful flex-col mt-10">
+    <section className="bg-white flex w-ful flex-col mt-20">
       <div className="flex w-full justify-between text-black text-2xl font-semibold items-center">
         <p>
           Check Out Our
@@ -71,57 +81,65 @@ const BestSellers = () => {
           </p>
         </div>
       </div>
-      <div className="mt-16 flex mx-auto w-full ml-[65px] space-x-8 relative">
-      <button
-        className="absolute mt-[130px] -left-[60px] z-10 w-[30px] scale-[2] text-black pl-3"
-        onClick={scrollLeft}
-      >
-        <HiOutlineChevronLeft />
-      </button>
+      <div className="mt-[120px] flex mx-auto w-full ml-[80px] space-x-4 relative">
+        <button
+          className="absolute mt-[130px] -left-[70px] z-10 w-[30px] scale-[2] text-black pl-3"
+          onClick={scrollLeft}
+        >
+          <HiOutlineChevronLeft />
+        </button>
 
-      {cakes.map((cake, index) => (
-       <div
-       key={cake.id}
-       className={`w-[200px] h-[250px]  rounded-xl transition-all duration-300 ${
-         activeIndex === index ? "bg-[#41759B] z-10" : "bg-[#D9D9D9] z-0"
-       }`}
-       style={{
-         transformOrigin: "center",
-         transform: `
+        {cakes.map((cake, index) => (
+          <div
+            key={cake.id}
+            className={`w-[205px] h-[260px] rounded-xl drop-shadow-md hover:drop-shadow-md  transition-all duration-300 ${
+              activeIndex === index
+                ? "bg-[#41759B]  text-white z-10"
+                : "bg-[#D9D9D9] text-[#393129] z-0"
+            }`}
+            style={{
+              transformOrigin: "center",
+              transform: `
            scale(${activeIndex === index ? 1.25 : 1}) 
-           translateX(${activeIndex > index ? "-10px" : activeIndex < index ? "10px" : "0"})`,
-       }}
-     >
-          <div className="px-5 flex flex-col items-start">
-            <img
-              src={cake.image}
-              alt={cake.name}
-              className="mt-5 flex my-auto px-5"
-            />
-            <p className="flex mt-2 text-2xl font-semibold text-center text-white">{cake.name}</p>
-            <p className="text-[10px] text-gray-300 font-thin mt-2">
-              {cake.description}
-            </p>
-            <div className="flex w-full justify-between text-white text-[14px] mt-1">
-              <p className="font-thin">{cake.weight}</p>
-              <p className="font-bold mt-1">{cake.price}</p>
+           translateX(${
+             activeIndex > index ? "-25px" : activeIndex < index ? "25px" : "0"
+           })`,
+            }}
+          >
+            <div className="px-5 flex flex-col items-center">
+              <img
+                src={cake.image}
+                alt={cake.name}
+                style={{
+                  width: cake.width,
+                  height: cake.height,
+                  objectFit: "cover",
+                }}
+                className="flex w-full -mt-[50px] mx-auto "
+              />
+              <p className="flex  mt-3 text-[18px] font-medium text-center">
+                {cake.name}
+              </p>
+              <p className="text-[9px]  font-thin mt-2">{cake.description}</p>
+              <p className="flex w-full justify-end mr-3 text-[9px]  font-semibold mt-2">
+                See more
+              </p>
             </div>
           </div>
-        </div>
-      ))}
+        ))}
 
-      <button
-        className="absolute mt-[130px] right-12 z-10 w-[30px] scale-[2] text-black"
-        onClick={scrollRight}
-      >
-        <HiOutlineChevronRight />
-      </button>
-    </div>
-      
-      <div class=" w-full h-[450px] mt-20  items-center">
+        <button
+          className="absolute mt-[130px] right-[90px] z-10 w-[30px] scale-[2] text-black"
+          onClick={scrollRight}
+        >
+          <HiOutlineChevronRight />
+        </button>
+      </div>
+
+      <div class=" w-full h-[450px] mt-[130px] mb-20 items-center">
         <img src={vou1} className="w-full h-full" />
       </div>
-      <div className="flex w-full bg-[#F5F5F5]">
+      {/* <div className="flex w-full bg-[#F5F5F5]">
         <div className="flex w-full mt-16 flex-col">
           <p className="ml-20 text-black text-left text-2xl font-semibold">
             Feature Sales
@@ -241,9 +259,8 @@ const BestSellers = () => {
                 </div>
               </div>
             </div>
-            <div></div>
           </div>
-        </div>
+        </div> */}
 
         {/* <div className="mt-16 mr-10">
             <p className=" ml-5 text-black text-left text-xl font-semibold">
@@ -309,7 +326,7 @@ const BestSellers = () => {
           </div> */}
         {/* </div> */}
         {/* </div> */}
-      </div>
+      {/* </div> */}
     </section>
   );
 };

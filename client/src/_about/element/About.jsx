@@ -30,10 +30,11 @@ const About = () => {
               products we produce are guaranteed quality and taste. It's so
               delicious, you have to try it!
             </p>
-
+            <Link to="/products">
             <button className=" bg-opacity-65 backdrop-blur-md bg-[#8f6c00] w-[150px] text-[15px] text-white font-serif px-3 py-2 rounded-3xl shadow hover:bg-[#D3B457] transition">
              Explore Menu
             </button>
+            </Link>
           </div>
           <img
             src={imgab}

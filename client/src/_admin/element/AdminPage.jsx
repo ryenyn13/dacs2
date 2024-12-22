@@ -143,28 +143,17 @@ const AdminPage = () => {
   const removeImage = (index) => {
     setImgs(imgs.filter((_, i) => i !== index));
   };
-  const eraseImage = (index) => {
-    setFormData((prev) => ({
-      ...prev,
-      images: prev.images.filter((_, i) => i !== index),
-    }));
-  };
+  // const eraseImage = (index) => {
+  //   // setFormData((prev) => ({
+  //   //   ...prev,
+  //   //   images: prev.images.filter((_, i) => i !== index),
+  //   // }));
+  // };
   const handleInputChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
   const handleEditImg = (e) => {
-    // const files = e.target.files;
-
-    // if (files && files.length > 0) {
-    //   const newImages = Array.from(files).map((file) =>
-    //     URL.createObjectURL(file)
-    //   ); // Tạo URL blob cho mỗi ảnh
-
-    //   setFormData((prev) => ({
-    //     ...prev,
-    //     images: [...prev.images, ...newImages], // Thêm ảnh mới vào danh sách hiện tại
-    //   }));
-    // }
     const files = Array.from(e.target.files);
     const updatedImgs = [...imgs];
     files.forEach((file) => {
@@ -640,9 +629,9 @@ const AdminPage = () => {
                                           alt={`Image ${index}`}
                                           className="flex w-[150px] h-[100px] object-cover bg-center rounded-xl"
                                         />
-                                        <IoIosClose
-                                          onClick={() => eraseImage(index)}
-                                          className="absolute top-2 right-2 text-red-500 cursor-pointer"
+                                        <IoClose
+                                          onClick={() => removeImage(index)}
+                                          className="absolute top-2 right-2 cursor-pointer  bg-red-500 text-white text-[15px] rounded-full p-0.5 opacity-50 group-hover:opacity-100 transition-opacity"
                                         />
                                       </div>
                                     ))}

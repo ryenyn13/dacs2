@@ -15,7 +15,7 @@ import useAuthUser from "./components/auth/useAuthUser";
 import AddCake from "./_admin/element/AddCake";
 import AdminLayout from "./_admin/AdminLayout";
 import ForgotPass from "./_auth/ForgotPass";
-// import PaymentDetail from "./_cart/element/PaymentDetail";
+import PaymentDetail from "./_cart/element/PaymentDetail";
 const App = () => {
   const {data: authUser, isLoading} = useAuthUser();
   return (
@@ -33,7 +33,7 @@ const App = () => {
         <Route path="/addcake" element={<AddCake />} />
         <Route path="/adminpage" element={<AdminLayout/>} />
         <Route path="/forgotpass" element={<ForgotPass/>} />
-        {/* <Route path="/paymentdetail" element={<PaymentDetail/>} /> */}
+        <Route path="/paymentdetail" element={<PaymentDetail/>} />
       </Routes>
     </>
   );

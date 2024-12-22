@@ -57,6 +57,7 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
   };
+  
   return (
     <section className="bg-white flex w-full flex-col">
       <Toaster position="top-center" reverseOrder={false} />
