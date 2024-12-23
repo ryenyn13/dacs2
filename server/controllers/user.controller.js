@@ -14,7 +14,36 @@ export const getAllUsers = async(req, res) => {
         res.status(404).json({message: error.message});
     }
 }
+export const getUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if(!user) {
+            return res.status(404).json({message: "User not found"});
+        }
+        res.status(200).json(cake);
+    } catch (error) {
+        console.log("Error in get user controller", error.message);
+        res.status(500).json({ error: "Something went wrong" });
+    }
+  };
+export const updateUser = async (req, res) => {
+  const { bio } = req.body;
+  const userId = req.params.id;
 
+  try {
+    let user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    user.bio = bio || user.bio;
+    
+    await user.save();
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error in updateUser controller:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};
 export const getAllCart = async(req, res) => {
     try {
         // get user cart then populate it based on id

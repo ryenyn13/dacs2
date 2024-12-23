@@ -8,10 +8,90 @@ import manager from "../../assets/about/manager.png";
 import owner from "../../assets/about/owner.png";
 import bake from "../../assets/about/bake.png";
 import deckem from "../../assets/about/deckem.png";
+import { useState } from "react";
+import { useMutation, QueryClient } from "@tanstack/react-query";
+import { toast, Toaster } from "react-hot-toast";
+import { useQueryClient, useQuery } from "@tanstack/react-query";
+import { TailSpin } from "react-loader-spinner";
 
 const Contact = () => {
+   const queryClient = useQueryClient();
+  // get user by id
+  const { mutate: getUser } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const res = await fetch(`/api/user/getUser/${id}`, {
+          method: "GET",
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || "Failed to get user.");
+        return data;
+      } catch (error) {
+        throw new Error(error.message);
+      }
+    },
+    onSuccess: (data) => {
+      setFormData({
+        fullName: data.fullName,
+        email: data.email,
+        bio: data.bio,
+      });
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+  const [formData, setFormData] = useState({
+    
+    fullName: "",
+    email: "",
+    bio: "",
+  });
+
+    const { mutate: updateUser, isPending: isUpdatingUser } = useMutation({
+      mutationFn: async (data) => {
+        try {
+          const res = await fetch(`/api/user/update/${data.id}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+          const result = await res.json();
+          if (!res.ok) {
+            throw new Error(result.error || "Something went wrong");
+          }
+          return result;
+        } catch (error) {
+          throw new Error(error);
+        }
+      },
+      onSuccess: () => {
+        toast.success("Update user successfully");
+        console.log("User data:", data);
+        // invalidate the query to refetch the data
+        queryClient.invalidateQueries({ queryKey: ["users"] });
+      },
+      onError: (error) => {
+        toast.error(error.message);
+      },
+    });
+  
+    const handleUpdateSubmit = (event) => {
+      event.preventDefault();
+      formData.bio = bio;
+      updateUser(formData);
+    };
+    const handleInputChange = (e) => {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+ 
+
   return (
     <section>
+      <Toaster position="top-center" reverseOrder={false}></Toaster>
       <div className="h-auto bg-[#F5F5F5] pt-5 px-24 mb-[100px]">
         <p className="flex justify-center text-[30px] text-[#41759B] py-5 font-bold ">
           Our Members
@@ -71,8 +151,8 @@ const Contact = () => {
                   <img src={facebook} className=" flex h-[20px] w-[20px]"></img>
                 </div>
               </div>
-              <form>
-                {/* Name Input */}
+              <form onSubmit={handleUpdateSubmit}>
+               
                 <div className="mb-4">
                   <label
                     htmlFor="name"
@@ -84,13 +164,16 @@ const Contact = () => {
                     type="text"
                     id="name"
                     name="name"
+                    value={formData.fullName}
+                    onChange={handleInputChange}
                     placeholder="Enter your name"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
                     required
+                    
                   />
                 </div>
 
-                {/* Email Input */}
+               
                 <div className="mb-4">
                   <label
                     htmlFor="email"
@@ -102,36 +185,40 @@ const Contact = () => {
                     type="email"
                     id="email"
                     name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
                     placeholder="Enter your email"
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
                     required
+                   
                   />
                 </div>
 
-                {/*  Input */}
                 <div className="mb-4">
                   <label
-                    htmlFor="question"
+                    htmlFor="problem"
                     className="block text-sm font-medium text-gray-700 mb-1"
                   >
                     How can I help?
                   </label>
                   <input
                     type="text"
-                    id="question"
-                    name="question"
+                    id="problem"
+                    name="problem"
+                    value={formData.bio}
+                    onChange={handleInputChange}
                     placeholder="Enter your problem"
                     className="w-full px-4 py-5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
                     required
                   />
                 </div>
 
-                {/* Submit Button */}
                 <button
                   type="submit"
                   className="w-full bg-[#41759B] text-white py-2 px-4 rounded-lg shadow-md hover:bg-yellow-500 transition duration-200"
+                  disabled={isUpdatingUser}
                 >
-                  Send
+                  {isUpdatingUser ? "Sending..." : "Send"}
                 </button>
               </form>
             </div>
