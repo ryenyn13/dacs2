@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from "../common/Navbar"
 import Contact from "./element/Contact"
-import Footer from "../common/Footer"
+import Footer from "../common/FooterBlue"
 const ContactLayout = () => {
     return (
         <section className="bg-white">
@@ -11,7 +11,7 @@ const ContactLayout = () => {
             <div className="mt-[30px] mb-[30px]">
                 <Contact/>
             </div>
-            <div className="">
+            <div className="-mt-[70px]">
                 <Footer/>
             </div>
             /</section>

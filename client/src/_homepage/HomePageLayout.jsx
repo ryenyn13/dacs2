@@ -10,7 +10,7 @@ import About from "../_about/element/About";
 
 const HomePageLayout = () => {
   return (
-    <section className="bg-white">
+    <section className="bg-white ">
       <div className="px-24">
         <Navbar />
       </div>
@@ -20,7 +20,7 @@ const HomePageLayout = () => {
       <div className=" px-24 pb-10">
         <BestSellers />
       </div>
-      <div className="">
+      <div className=" mb-10">
         <About />
       </div>
       <div className="">

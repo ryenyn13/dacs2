@@ -16,6 +16,7 @@ import AddCake from "./_admin/element/AddCake";
 import AdminLayout from "./_admin/AdminLayout";
 import ForgotPass from "./_auth/ForgotPass";
 import PaymentDetail from "./_cart/element/PaymentDetail";
+
 const App = () => {
   const {data: authUser, isLoading} = useAuthUser();
   return (

@@ -17,9 +17,7 @@ import { useMutation } from "@tanstack/react-query";
 import { toast, Toaster } from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { CiLogout } from "react-icons/ci";
-
-
-
+import { useState } from "react";
 const Navbar = () => {
   const { data: authUser, isLoading } = useAuthUser();
   const queryClient = useQueryClient();
@@ -57,23 +55,28 @@ const Navbar = () => {
   const handleLogout = () => {
     logout();
   };
-  
+
+  const [showDropdown, setShowDropdown] = useState(false);
+
+  const toggleDropdown = () => {
+    setShowDropdown((prev) => !prev); // Chuyển đổi trạng thái
+  };
   return (
     <section className="bg-white flex w-full flex-col">
       <Toaster position="top-center" reverseOrder={false} />
       <div className="h-[80px] w-full flex py-25 space-y-3 ">
-        <div className="flex w-full justify-between items-center">
-          <div className="flex space-x-2 items-center">
+        <div className="flex w-full justify-between items-center ">
+          <div className="flex space-x-2 items-center ">
             <Link to="/contact">
-              <SlPaperPlane className="w-5 h-4" />
+              <SlPaperPlane className="w-5 h-4 cursor-pointer text-black hover:text-[#41759B]" />
             </Link>
             <Link to="https://www.facebook.com/ryenyn.13">
-              <CiFacebook className="w-5 h-6" />
+              <CiFacebook className="w-5 h-6 cursor-pointer text-black hover:text-[#41759B]" />
             </Link>
             <Link to="https://www.instagram.com/rye.bz135_/">
-              <PiInstagramLogoLight className="w-5 h-6" />
+              <PiInstagramLogoLight className="w-5 h-6 cursor-pointer text-black hover:text-[#41759B]" />
             </Link>
-            <CiTwitter className="w-7 h-6" />
+            <CiTwitter className="w-7 h-6 cursor-pointer text-black hover:text-[#41759B]" />
           </div>
           <div className="justify-center items-center ml-4 flex">
             <Link to={"/"}>
@@ -85,26 +88,43 @@ const Navbar = () => {
           </div>
           <div className="flex space-x-2 items-center">
             <Link to="/adminpage">
-              <CiSearch className="w-5 h-6" />
+              <CiSearch className="w-5 h-6 cursor-pointer text-black hover:text-[#41759B]" />
             </Link>
             <Link to="/cart">
-              <PiBagSimpleThin className="w-10 h-6" />
+              <PiBagSimpleThin className="w-10 h-6 cursor-pointer text-black hover:text-[#41759B]" />
             </Link>
             {authUser ? (
-              <CiUser
-                className="w-5 h-6 cursor-pointer"
-                onClick={<Link to="/adminpage"></Link>}
-              />
+              <div className="relative">
+                <CiUser
+                  className="w-5 h-6 cursor-pointer text-black hover:text-[#41759B]"
+                  onClick={toggleDropdown}
+                />
+                {showDropdown && (
+                  <div className="absolute flex w-[90px] -right-5 mt-2 items-center justify-center bg-white border shadow-md rounded-md ">
+                    <ul>
+                      <li>
+                        <a
+                          href="/forgotpass"
+                          className="cursor-pointer text-black hover:text-[#41759B] text-[10px]"
+                        >
+                          Reset Password
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
             ) : (
               <Link to="/login">
-                <button className="cursor-pointer flex justify-center items-center border border-black bg-white text-black text-xs py-1 px-4 w-auto rounded-2xl hover:bg-gray-200 transition">
+                <button className=" flex justify-center items-center border border-black bg-white text-xs py-1 px-4 w-auto rounded-2xl cursor-pointer text-black hover:text-[#41759B] transition">
                   Log In
                 </button>
               </Link>
             )}
+
             {authUser ? (
               <CiLogout
-                className=" w-5 h-6 mt-0.5 mx-3 cursor-pointer rotate-180"
+                className=" w-5 h-6 mt-0.5 mx-3 rotate-180 cursor-pointer text-black hover:text-[#41759B]"
                 onClick={handleLogout}
               />
             ) : (
@@ -128,6 +148,12 @@ const Navbar = () => {
         <Link to="/contact" className="li">
           Contact
         </Link>
+        {authUser?.isAdmin && (
+          // onClick={<Link to="/adminpage"></Link>}
+          <Link to="/adminpage" className="li cursor-pointer">
+            Admin
+          </Link>
+        )}
       </div>
     </section>
   );

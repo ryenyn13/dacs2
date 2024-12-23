@@ -4,23 +4,10 @@ import github from "../assets/icon/github.png";
 import facebook from "../assets/icon/facebook.png";
 import instagram from "../assets/icon/instagram.png";
 import logo from "../assets/logo/logo.png";
-import { useLocation } from "react-router-dom";
 
 const Footer = () => {
-  const location = useLocation();
-
-  // Ánh xạ đường dẫn (route) tới các màu khác nhau
-  const gradientColors = {
-    "/": "from-gray-100 via-[#e9d8c3] to-gray-100",
-    "/about": "from-gray-100 via-[#e9d8c3] to-gray-100",
-    "/products": "from-gray-100 via-[#f5f5f3] to-gray-100",
-
-  };
-  // Lấy màu phù hợp với route hiện tại, mặc định màu trang chủ
-  const currentGradient = gradientColors[location.pathname] || gradientColors["/"];
-
-  return ( 
-    <section className={`bg-gradient-to-b ${currentGradient}`}>
+  return (
+    <section className="bg-gradient-to-r from-white via-[#bcf6ff] to-white">
       <div className="max-w-screen-xl px-4 py-10  mx-auto ml-20 sm:px-6 lg:px-8">
         <div className="flex  items-center justify-between space-x-[100px]">
           <div className=" w-auto h-auto items-center flex flex-col py-5  space-y-4 ">

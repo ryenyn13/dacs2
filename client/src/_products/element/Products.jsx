@@ -133,8 +133,8 @@ const Products = () => {
           <p>PASTRY</p>
           <p>OTHER</p>
         </div>
-        <div className="mt-1 flex items-center space-x-1">
-          <div className="relative flex justify-center items-center w-full">
+        <div className="mt-1  flex items-center space-x-1">
+          <div className="relative  flex justify-center items-center w-full">
             <label
               htmlFor="search"
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -146,7 +146,7 @@ const Products = () => {
               // onChange={handleSearch}
               // value={SearchTerm}
             
-              className="w-full px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-0.5 focus:ring-[#c4def0] focus:border-[#bcd2e2]"
+              className="w-full px-3 py-1.5 ml-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-0.5 focus:ring-[#c4def0] focus:border-[#bcd2e2]"
             
             />
             <FaSearch
@@ -154,8 +154,8 @@ const Products = () => {
               title="Search"
             />
           </div>
-          <p className="text-[15px] font-bold  text-[#65594C]">Filter</p>
-          <MdArrowDropDown className="w-5 h-5" />
+          {/* <p className="text-[15px] font-bold  text-[#65594C]">Filter</p>
+          <MdArrowDropDown className="w-5 h-5" /> */}
         </div>
       </div>
       <div className="space-y-2">

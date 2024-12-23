@@ -7,6 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import { CiEdit } from "react-icons/ci";
 import { IoClose } from "react-icons/io5";
 import { IoIosClose } from "react-icons/io";
+import { AiOutlineCheckCircle } from "react-icons/ai"; // Icon tick
 
 import { Link } from "react-router-dom";
 import admin_background from "../../assets/background/cart_background.png";
@@ -18,6 +19,7 @@ import { TailSpin } from "react-loader-spinner";
 import { useNavigate } from "react-router-dom";
 
 const AdminPage = () => {
+  const [activeTab, setActiveTab] = useState("products"); // Tab mặc định là 'products'
   // navigate
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -265,6 +267,28 @@ const AdminPage = () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
   });
+  const { data: users, isLoading: isLoadingUsers } = useQuery({
+    queryKey: ["users"],
+    queryFn: async () => {
+      try {
+        const response = await fetch("/api/user/all");
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Something went wrong!");
+        }
+        console.log(data);
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  });
+  const [formDataUser, setFormDataUser] = useState({
+    username: "",
+    fullName: "",
+    email: "",
+  });
 
   return (
     <section
@@ -273,11 +297,29 @@ const AdminPage = () => {
     >
       <Toaster position="top-center" reverseOrder={false}></Toaster>
 
-      <div className=" flex w-full justify-center  space-x-[100px]">
-        <div className="flex items-center space-x-10">
-          <p>Products</p>
-          <p>Users</p>
+      <div className=" flex w-full justify-center ">
+        <div className="w-auto h-auto flex flex-col items-start">
+          {/* Tab Switcher */}
+          <div className="flex w-full justify-start items-center py-5 px-20 space-x-[50px] text-gray-600">
+            <p
+              className={`cursor-pointer ${
+                activeTab === "products" ? "text-[#41759B] font-semibold" : ""
+              }`}
+              onClick={() => setActiveTab("products")}
+            >
+              Products
+            </p>
+            <p
+              className={`cursor-pointer ${
+                activeTab === "users" ? "text-[#41759B] font-semibold" : ""
+              }`}
+              onClick={() => setActiveTab("users")}
+            >
+              Users
+            </p>
+          </div>
         </div>
+
         <div className="flex items-center space-x-5">
           <div className="flex">
             <label
@@ -436,261 +478,310 @@ const AdminPage = () => {
           )}
         </div>
       </div>
+      {activeTab === "products" && (
+        <div className="bg-white w-auto h-auto flex flex-col rounded-[13px] shadow-md items-start">
+          <div className="flex w-full justify-start items-center ml-[85px] py-5 px-20 space-x-[270px] text-gray-600">
+            <p>Products</p>
 
-      <div className="bg-white w-auto h-auto flex flex-col rounded-[13px] shadow-md items-start">
-        <div className="flex w-full justify-start items-center ml-[85px] py-5 px-20 space-x-[270px] text-gray-600">
-          <p>Products</p>
-
-          <div className="flex space-x-[50px] items-center">
-            <p>Quantity</p>
-            <p>Price</p>
-            <p>Edit</p>
-            <p>Delete</p>
-          </div>
-        </div>
-
-        <div className="flex flex-col w-full">
-          {isLoading && (
-            <div className="justify-center items-center flex w-full">
-              <TailSpin
-                visible={true}
-                height="50"
-                width="50"
-                color="#4fa94d"
-                ariaLabel="tail-spin-loading"
-                radius="1"
-                wrapperStyle={{}}
-                wrapperClass=""
-              />
+            <div className="flex space-x-[50px] items-center">
+              <p>Quantity</p>
+              <p>Price</p>
+              <p>Edit</p>
+              <p>Delete</p>
             </div>
-          )}
-          {products &&
-            products.map((product) => (
-              <div
-                key={product._id}
-                className=" w-auto h-auto flex items-start px-20 py-5 space-x-[85px] border-t border-gray-300"
-              >
-                <div className="flex w-auto items-start space-x-4 ">
-                  <img
-                    src={
-                      product.images[0]
-                        ? product.images[0]
-                        : "https://placehold.co/80x80"
-                    }
-                    className="flex h-[80px] w-[80px] -ml-3 object-cover"
-                  ></img>
+          </div>
 
-                  <div className="flex flex-col items-start space-y-2">
-                    <p> {product.cakeName}</p>
-                    <div>
-                      <p className="w-[250px] text-[10px] text-gray-500 line-clamp-3">
-                        {product.description}
-                      </p>
+          <div className="flex flex-col w-full">
+            {isLoading && (
+              <div className="justify-center items-center flex w-full">
+                <TailSpin
+                  visible={true}
+                  height="50"
+                  width="50"
+                  color="#4fa94d"
+                  ariaLabel="tail-spin-loading"
+                  radius="1"
+                  wrapperStyle={{}}
+                  wrapperClass=""
+                />
+              </div>
+            )}
+            {products &&
+              products.map((product) => (
+                <div
+                  key={product._id}
+                  className=" w-auto h-auto flex items-start px-20 py-5 space-x-[85px] border-t border-gray-300"
+                >
+                  <div className="flex w-auto items-start space-x-4 ">
+                    <img
+                      src={
+                        product.images[0]
+                          ? product.images[0]
+                          : "https://placehold.co/80x80"
+                      }
+                      className="flex h-[80px] w-[80px] -ml-3 object-cover"
+                    ></img>
+
+                    <div className="flex flex-col items-start space-y-2">
+                      <p> {product.cakeName}</p>
+                      <div>
+                        <p className="w-[250px] text-[10px] text-gray-500 line-clamp-3">
+                          {product.description}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className=" flex justify-between items-center py-5  space-x-[40px]">
-                  <div className="flex w-auto items-start space-x-2">
-                    <CiSquarePlus className="w-4 h-4" />
-                    <p className="text-[11px]  ">01</p>
-                    <CiSquareMinus className="w-4 h-4" />
-                  </div>
-                  <div className="flex w-auto space-x-[58px] ">
-                    <div className=" flex justify-between items-center space-x-[50px] ">
-                      <p className=" flex -ml-1 text-[11px] font-bold">
-                        {" "}
-                        {product.price} VND
-                      </p>
+                  <div className=" flex justify-between items-center py-5  space-x-[40px]">
+                    <div className="flex w-auto items-start space-x-2">
+                      <CiSquarePlus className="w-4 h-4" />
+                      <p className="text-[11px]  ">01</p>
+                      <CiSquareMinus className="w-4 h-4" />
+                    </div>
+                    <div className="flex w-auto space-x-[58px] ">
+                      <div className=" flex justify-between items-center space-x-[50px] ">
+                        <p className=" flex -ml-1 text-[11px] font-bold">
+                          {" "}
+                          {product.price} VND
+                        </p>
 
-                      <CiEdit
-                        onClick={() => handleOpenEdit(product._id)}
-                        className=" text-blue-600  w-5 h-5"
-                      ></CiEdit>
-                      {isOpenEdit && (
-                        <div className="fixed -inset-11 flex items-center justify-center z-50">
-                          <div
-                            className="w-[500px] bg-white border border-gray-300 rounded-lg shadow-lg p-8
+                        <CiEdit
+                          onClick={() => handleOpenEdit(product._id)}
+                          className=" text-blue-600  w-5 h-5"
+                        ></CiEdit>
+                        {isOpenEdit && (
+                          <div className="fixed -inset-11  bg-white bg-opacity-10 flex items-center justify-center z-50">
+                            <div
+                              className="w-[500px] bg-white border  border-gray-300 rounded-lg shadow-lg p-8
                           max-h-[550px] overflow-y-auto
                           [&::-webkit-scrollbar]:w-1 
                           [&::-webkit-scrollbar-track]:rounded-full
                           [&::-webkit-scrollbar-track]:bg-gray-100
                           [&::-webkit-scrollbar-thumb]:rounded-full
-                          [&::-webkit-scrollbar-thumb]:bg-gray-500"
-                          >
-                            <div className="flex justify-end -mt-2">
-                              <IoClose
-                                onClick={handleCloseEdit}
-                                className="text-black hover:text-red-700 cursor-pointer"
-                              />
-                            </div>
-                            <form onSubmit={handleEditSubmit}>
-                              <div className="mt-5 mb-4">
-                                <label
-                                  htmlFor="cakeName"
-                                  className="block text-sm font-medium text-gray-700 mb-1"
-                                >
-                                  Cake Name
-                                </label>
-                                <input
-                                  type="text"
-                                  name="cakeName"
-                                  value={formData.cakeName}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      cakeName: e.target.value,
-                                    })
-                                  }
-                                  className="w-full px-4 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-[#41759B] focus:border-[#6aacdc]"
-                                  required
+                          [&::-webkit-scrollbar-thumb]:bg-gray-200"
+                            >
+                              <div className="flex justify-end -mt-2">
+                                <IoClose
+                                  onClick={handleCloseEdit}
+                                  className="text-black hover:text-red-700 cursor-pointer"
                                 />
                               </div>
-
-                              <div className="mb-4">
-                                <label
-                                  htmlFor="price"
-                                  className="block text-sm font-medium text-gray-700 mb-1"
-                                >
-                                  Price
-                                </label>
-                                <input
-                                  type="number"
-                                  name="price"
-                                  value={formData.price}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      price: e.target.value,
-                                    })
-                                  }
-                                  className="w-full px-4 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-[#41759B] focus:border-[#6aacdc]"
-                                  required
-                                />
-                              </div>
-
-                              <div className="mb-4">
-                                <label
-                                  htmlFor="description"
-                                  className="block text-sm font-medium text-gray-700 mb-1"
-                                >
-                                  Description
-                                </label>
-                                <textarea
-                                  name="description"
-                                  value={formData.description}
-                                  onChange={(e) =>
-                                    setFormData({
-                                      ...formData,
-                                      description: e.target.value,
-                                    })
-                                  }
-                                  className="w-full px-4 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-[#41759B] focus:border-[#6aacdc]"
-                                  required
-                                />
-                              </div>
-
-                              {/* Image Upload */}
-                              <div>
-                                <label className="block text-sm font-medium text-gray-700">
-                                  Uploaded Images
-                                </label>
-                                <label
-                                  htmlFor="imageUpload"
-                                  className="flex items-center justify-center w-full h-20 mt-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-gray-50"
-                                >
-                                  <div className="text-center">
-                                    <p className="text-gray-600">
-                                      Click to upload or drag and drop images
-                                    </p>
-                                    <p className="text-sm text-gray-400">
-                                      (JPEG, PNG, up to 5MB each)
-                                    </p>
-                                  </div>
+                              <form onSubmit={handleEditSubmit}>
+                                <div className="mt-5 mb-4">
+                                  <label
+                                    htmlFor="cakeName"
+                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                  >
+                                    Cake Name
+                                  </label>
                                   <input
-                                    id="imageUpload"
-                                    type="file"
-                                    accept="image/*"
-                                    multiple
-                                    className="hidden"
-                                    onChange={handleEditImg}
+                                    type="text"
+                                    name="cakeName"
+                                    value={formData.cakeName}
+                                    onChange={(e) =>
+                                      setFormData({
+                                        ...formData,
+                                        cakeName: e.target.value,
+                                      })
+                                    }
+                                    className="w-full px-4 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-[#41759B] focus:border-[#6aacdc]"
+                                    required
                                   />
-                                </label>
-
-                                <div className="mt-4 grid grid-cols-4 gap-4">
-                                  {imgs &&
-                                    imgs.map((img, index) => (
-                                      <div
-                                        key={index}
-                                        className="relative w-[100px] h-[100px] bg-black bg-opacity-20 rounded-xl"
-                                      >
-                                        <img
-                                          src={img}
-                                          alt={`Image ${index}`}
-                                          className="flex w-[150px] h-[100px] object-cover bg-center rounded-xl"
-                                        />
-                                        <IoClose
-                                          onClick={() => removeImage(index)}
-                                          className="absolute top-2 right-2 cursor-pointer  bg-red-500 text-white text-[15px] rounded-full p-0.5 opacity-50 group-hover:opacity-100 transition-opacity"
-                                        />
-                                      </div>
-                                    ))}
                                 </div>
-                              </div>
 
-                              <div className="flex flex-col justify-center mt-5">
-                                <button
-                                  type="submit"
-                                  className="w-full bg-[#D3B457] text-white font-bold py-2 px-5 mb-1 rounded-lg hover:bg-[#8f6c00] transition duration-200"
-                                  //   disabled={isEditing}
-                                  // >
-                                  //   {isEditing ? "Saving..." : "Save Changes"}
-                                  disabled={isUpdating}
-                                >
-                                  {isUpdating ? "Saving..." : "Save Changes"}
-                                </button>
-                              </div>
-                            </form>
+                                <div className="mb-4">
+                                  <label
+                                    htmlFor="price"
+                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                  >
+                                    Price
+                                  </label>
+                                  <input
+                                    type="number"
+                                    name="price"
+                                    value={formData.price}
+                                    onChange={(e) =>
+                                      setFormData({
+                                        ...formData,
+                                        price: e.target.value,
+                                      })
+                                    }
+                                    className="w-full px-4 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-[#41759B] focus:border-[#6aacdc]"
+                                    required
+                                  />
+                                </div>
+
+                                <div className="mb-4">
+                                  <label
+                                    htmlFor="description"
+                                    className="block text-sm font-medium text-gray-700 mb-1"
+                                  >
+                                    Description
+                                  </label>
+                                  <textarea
+                                    name="description"
+                                    value={formData.description}
+                                    onChange={(e) =>
+                                      setFormData({
+                                        ...formData,
+                                        description: e.target.value,
+                                      })
+                                    }
+                                    className="w-full px-4 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-[#41759B] focus:border-[#6aacdc]"
+                                    required
+                                  />
+                                </div>
+
+                                {/* Image Upload */}
+                                <div>
+                                  <label className="block text-sm font-medium text-gray-700">
+                                    Uploaded Images
+                                  </label>
+                                  <label
+                                    htmlFor="imageUpload"
+                                    className="flex items-center justify-center w-full h-20 mt-2 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:border-blue-400 hover:bg-gray-50"
+                                  >
+                                    <div className="text-center">
+                                      <p className="text-gray-600">
+                                        Click to upload or drag and drop images
+                                      </p>
+                                      <p className="text-sm text-gray-400">
+                                        (JPEG, PNG, up to 5MB each)
+                                      </p>
+                                    </div>
+                                    <input
+                                      id="imageUpload"
+                                      type="file"
+                                      accept="image/*"
+                                      multiple
+                                      className="hidden"
+                                      onChange={handleEditImg}
+                                    />
+                                  </label>
+
+                                  <div className="mt-4 grid grid-cols-4 gap-4">
+                                    {imgs &&
+                                      imgs.map((img, index) => (
+                                        <div
+                                          key={index}
+                                          className="relative w-[100px] h-[100px] bg-black bg-opacity-20 rounded-xl"
+                                        >
+                                          <img
+                                            src={img}
+                                            alt={`Image ${index}`}
+                                            className="flex w-[150px] h-[100px] object-cover bg-center rounded-xl"
+                                          />
+                                          <IoClose
+                                            onClick={() => removeImage(index)}
+                                            className="absolute top-2 right-2 cursor-pointer  bg-red-500 text-white text-[15px] rounded-full p-0.5 opacity-50 group-hover:opacity-100 transition-opacity"
+                                          />
+                                        </div>
+                                      ))}
+                                  </div>
+                                </div>
+
+                                <div className="flex flex-col justify-center mt-5">
+                                  <button
+                                    type="submit"
+                                    className="w-full bg-[#D3B457] text-white font-bold py-2 px-5 mb-1 rounded-lg hover:bg-[#8f6c00] transition duration-200"
+                                    //   disabled={isEditing}
+                                    // >
+                                    //   {isEditing ? "Saving..." : "Save Changes"}
+                                    disabled={isUpdating}
+                                  >
+                                    {isUpdating ? "Saving..." : "Save Changes"}
+                                  </button>
+                                </div>
+                              </form>
+                            </div>
                           </div>
-                        </div>
-                        //<button
-                        // type="submit"
-                        // className="w-full bg-white border border-[#41759B] text-[#41759B] py-2 px-5 rounded-lg shadow-md hover:text-white hover:bg-[#1c4f73] transition duration-200">
-                        // Clear
-                        // </button>
-                      )}
-                   
-                  </div>
+                          //<button
+                          // type="submit"
+                          // className="w-full bg-white border border-[#41759B] text-[#41759B] py-2 px-5 rounded-lg shadow-md hover:text-white hover:bg-[#1c4f73] transition duration-200">
+                          // Clear
+                          // </button>
+                        )}
+                      </div>
 
-                  {isDeleting ? (
-                    <p>Loading...</p>
-                  ) : (
-                    <CiTrash
-                      className=" cursor-pointer text-red-500 w-5 h-5"
-                      onClick={() =>
-                        // console.log(product._id)
-                        deleteCake(product._id)
-                      }
-                    />
+                      {isDeleting ? (
+                        <p>Loading...</p>
+                      ) : (
+                        <CiTrash
+                          className=" cursor-pointer text-red-500 w-5 h-5"
+                          onClick={() =>
+                            // console.log(product._id)
+                            deleteCake(product._id)
+                          }
+                        />
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+          </div>
+
+          <div className=" w-[900px] flex items-center  border-t border-gray-300">
+            {" "}
+          </div>
+
+          <Link to="/products">
+            <div className="flex justify-start items-center px-3 py-5 text-[15px] text-blue-600">
+              <IoIosArrowRoundBack className="w-7 h-7 " />
+
+              <p>Back to Product</p>
+            </div>
+          </Link>
+        </div>
+      )}
+      {activeTab === "users" && (
+        <div className="bg-white w-auto h-auto flex flex-col rounded-[13px] shadow-md items-start">
+          <div className="flex w-full justify-start items-center px-20 py-5  space-x-[55px] text-gray-600">
+            {/* <div className="flex space-x-[50px] items-center"> */}
+            <p className="w-[100px] -ml-4 ">Username</p>
+            <p className="w-[100px] flex justify-center">Full Name</p>
+            <p className="w-[245px] flex px-5">Email</p>
+            <p className="flex ">Admin</p>
+          </div>
+          {/* </div> */}
+
+          {isLoadingUsers && (
+            <div className="flex justify-center items-center w-full">
+              <TailSpin visible={true} height="50" width="50" color="#4fa94d" />
+            </div>
+          )}
+
+          {users &&
+            users.map((user) => (
+              <div
+                key={user._id}
+                className="w-auto h-auto flex items-start px-20 py-3 space-x-[85px] border-t border-gray-300"
+              >
+                <div className="flex justify-between items-center py-5  space-x-[40px]">
+                  <p className="w-[100px]">{user.username}</p>
+                  <p className="w-[100px] flex justify-center">
+                    {user.fullName}
+                  </p>
+                  <p className="w-[280px]">{user.email}</p>
+                  {user.isAdmin && (
+                    <AiOutlineCheckCircle className="text-green-500 w-5 h-5" />
                   )}
                 </div>
               </div>
-              </div>
             ))}
-        </div>
 
-        <div className=" w-[900px] flex items-center  border-t border-gray-300">
-          {" "}
-        </div>
-
-        <Link to="/products">
-          <div className="flex justify-start items-center px-3 py-5 text-[15px] text-blue-600">
-            <IoIosArrowRoundBack className="w-7 h-7 " />
-
-            <p>Back to Product</p>
+          <div className=" w-full flex items-center  border-t border-gray-300">
+            {" "}
           </div>
-        </Link>
-      </div>
+
+          <Link to="/products">
+            <div className="flex justify-start items-center px-3 py-5 text-[15px] text-[#41759B] ">
+              <IoIosArrowRoundBack className="w-7 h-7 " />
+
+              <p>Back to Product</p>
+            </div>
+          </Link>
+        </div>
+      )}
     </section>
   );
 };
