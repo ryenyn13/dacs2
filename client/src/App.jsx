@@ -6,7 +6,7 @@ import AboutLayout from "./_about/AboutLayout";
 import EventLayout from "./_event/EventLayout";
 import ContactLayout from "./_contact/ContactLayout";
 import SignUpLayout from "./_auth/_signup/SignUpLayout";
-import LogInLayout from "./_auth/_login/LoginLayout";
+import LoginLayout from "./_auth/_login/LoginLayout";
 
 import CartLayout from "./_cart/CartLayout";
 import ProductDetailLayout from "./_productDetail/ProductDetailLayout";
@@ -27,7 +27,7 @@ const App = () => {
         <Route path="/event" element={<EventLayout />} />
         <Route path="/contact" element={<ContactLayout />} />
         <Route path="/signup" element= {!authUser ? <SignUpLayout /> : <Navigate to="/" />} />
-        <Route path="/login" element={!authUser ? <LogInLayout /> : <Navigate to="/" />}/>
+        <Route path="/login" element={!authUser ? <LoginLayout/> : <Navigate to="/" />}/>
         <Route path="/cart" element={authUser ? <CartLayout isLogin={Number(true)} /> : <CartLayout isLogin={false} />} />
         <Route path="/productdetail/:id" element={<ProductDetailLayout />} />
         <Route path="/addcake" element={<AddCake />} />
