@@ -9,14 +9,14 @@ import owner from "../../assets/about/owner.png";
 import bake from "../../assets/about/bake.png";
 import deckem from "../../assets/about/deckem.png";
 
-
 const Contact = () => {
   return (
     <section>
-      <div className="h-[1500px] bg-[#F5F5F5] pt-5 px-24">
-      <p className="flex justify-center text-[30px] text-[#41759B] py-5 font-bold ">Our Members</p>
+      <div className="h-auto bg-[#F5F5F5] pt-5 px-24 mb-[100px]">
+        <p className="flex justify-center text-[30px] text-[#41759B] py-5 font-bold ">
+          Our Members
+        </p>
         <div className=" flex flex-cols-4 justify-center w-full space-x-8 ">
-          
           <div className="flex flex-col items-start mb-4">
             <img
               src={manager}
@@ -55,95 +55,89 @@ const Contact = () => {
             </p>
           </div>
         </div>
-        <div className=" flex items-center justify-center space-x-[60px] mt-20">
+        <div className=" flex items-center bg-[#F5F5F5] h-[700px] justify-center space-x-[60px]  ">
           <img src={cake} className=" w-[450px] h-[450px]  mt-10" />
           <div className="flex flex-col w-[500px] h-[450px] items-center justify-center space-y-5 mt-5">
-            
-              <div className="w-full bg-white p-8 shadow-md rounded-lg ">
-                <div className=" flex flex-col justify-center items-center text-[40px] font-bold">
-                  <p className="">Contact </p>
-                  <p className="text-[20px] ml-[150px]">Our Bakery</p>
-                  <div className=" flex space-x-10 w-full items-center justify-center mt-3 mb-2 ">
-                    <img src={github} className=" flex h-[20px] w-[20px]"></img>
-                    <img
-                      src={instagram}
-                      className=" flex h-[20px] w-[20px]"
-                    ></img>
-                    <img
-                      src={facebook}
-                      className=" flex h-[20px] w-[20px]"
-                    ></img>
-                  </div>
+            <div className="w-full bg-white p-8  shadow-md rounded-lg ">
+              <div className=" flex flex-col justify-center items-center text-[40px] font-bold">
+                <p className="">Contact </p>
+                <p className="text-[20px] ml-[150px]">Our Bakery</p>
+                <div className=" flex space-x-10 w-full items-center justify-center mt-3 mb-2 ">
+                  <img src={github} className=" flex h-[20px] w-[20px]"></img>
+                  <img
+                    src={instagram}
+                    className=" flex h-[20px] w-[20px]"
+                  ></img>
+                  <img src={facebook} className=" flex h-[20px] w-[20px]"></img>
                 </div>
-                <form>
-                  {/* Name Input */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="name"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Name
-                    </label>
-                    <input
-                      type="text"
-                      id="name"
-                      name="name"
-                      placeholder="Enter your name"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
-                      required
-                    />
-                  </div>
-
-                  {/* Email Input */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="email"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      Email
-                    </label>
-                    <input
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="Enter your email"
-                      className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
-                      required
-                    />
-                  </div>
-
-                  {/*  Input */}
-                  <div className="mb-4">
-                    <label
-                      htmlFor="question"
-                      className="block text-sm font-medium text-gray-700 mb-1"
-                    >
-                      How can I help?
-                    </label>
-                    <input
-                      type="text"
-                      id="question"
-                      name="question"
-                      placeholder="Enter your problem"
-                      className="w-full px-4 py-5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
-                      required
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    type="submit"
-                    className="w-full bg-[#41759B] text-white py-2 px-4 rounded-lg shadow-md hover:bg-yellow-500 transition duration-200"
-                  >
-                    Send
-                  </button>
-                </form>
               </div>
-           
+              <form>
+                {/* Name Input */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="name"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter your name"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
+                    required
+                  />
+                </div>
+
+                {/* Email Input */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="email"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="Enter your email"
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
+                    required
+                  />
+                </div>
+
+                {/*  Input */}
+                <div className="mb-4">
+                  <label
+                    htmlFor="question"
+                    className="block text-sm font-medium text-gray-700 mb-1"
+                  >
+                    How can I help?
+                  </label>
+                  <input
+                    type="text"
+                    id="question"
+                    name="question"
+                    placeholder="Enter your problem"
+                    className="w-full px-4 py-5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#41759B] focus:border-[#41759B]"
+                    required
+                  />
+                </div>
+
+                {/* Submit Button */}
+                <button
+                  type="submit"
+                  className="w-full bg-[#41759B] text-white py-2 px-4 rounded-lg shadow-md hover:bg-yellow-500 transition duration-200"
+                >
+                  Send
+                </button>
+              </form>
+            </div>
           </div>
         </div>
       </div>
-     
 
       {/*<div>
            <div className="flex justify-center items-center">
