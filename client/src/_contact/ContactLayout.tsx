@@ -11,7 +11,7 @@ const ContactLayout = () => {
     <div className="mt-[30px] mb-[30px]">
         <Contact/>
     </div>
-    <div className="">
+    <div className="-mt-[65px]">
         <Footer/>
     </div>
     /</section>

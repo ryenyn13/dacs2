@@ -75,7 +75,7 @@ const Navbar = () => {
             </Link>
             <CiTwitter className="w-7 h-6" />
           </div>
-          <div className="justify-center items-center flex">
+          <div className="justify-center items-center ml-4 flex">
             <Link to={"/"}>
               <img
                 src={logo}
