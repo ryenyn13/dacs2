@@ -9,6 +9,7 @@ import {v2 as cloudinary} from 'cloudinary';
 import userRoutes from './routes/user.route.js';
 import authRoutes from './routes/auth.route.js';
 import cakeRoutes from './routes/cake.route.js';
+import orderRoutes from './routes/order.route.js';
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ app.get("/", (req, res) => {
 app.use("/api/user", userRoutes); // user routes
 app.use("/api/auth", authRoutes);
 app.use("/api/cake", cakeRoutes);
+app.use("/api/order", orderRoutes);
 
 
 app.listen(5000, () => {

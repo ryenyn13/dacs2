@@ -1,10 +1,23 @@
 import mongoose from "mongoose";
 
-const orderSchema = new mongoose.Schema({
-    productID: {
-        type: mongoose.Schema.Types.ObjectId, 
-        ref: "Cake",
+const orderItemSchema = new mongoose.Schema({
+    cakeID: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Cake' },
+    name: { type: String, required: true },
+    price: { type: String, required: true },
+    quantity: { 
+        type: Number, 
+        required: true 
     },
+    total: { 
+        type: Number, 
+        required: true 
+    },
+});
+const orderSchema = new mongoose.Schema({
+    // productID: {
+    //     type: mongoose.Schema.Types.ObjectId, 
+    //     ref: "Cake",
+    // },
     fullName: {
         type: String,
         default: "Guest"
@@ -13,7 +26,6 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
     },
-    
     email: {
         type: String,
         required: true
@@ -26,53 +38,19 @@ const orderSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    orderItems: [
-        {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: "orderItem",
-            required: true  
-        }
-    ],
+    orderItems: [ orderItemSchema ],
     orderDate: {
         type: Date,
         default: Date.now
     },
-
     shippingPrice: {
         type: Number,
         required: true            
     },
-    
     totalPrice: {
         type: Number,
         required: true
     },   
-     paymentMethod: {
-        type: String,
-        required: true
-    },
-    paymentResult: {
-        id: String,
-        required: true
-    },
-    isPaid: {
-        type: Boolean,
-        default: false,
-        required: true
-    },
-    paidDate: {
-        type: Date
-    },
-    isDelivered: {
-        type: Boolean,
-        default: false,
-        required: true
-    },
-    isCancelled: {
-        type: Boolean,
-        default: false,
-        required: true
-    },
 },
     {
         timestamps: true

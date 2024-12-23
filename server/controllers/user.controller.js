@@ -116,41 +116,35 @@ export const sendPaymentDetails = async (req, res) => {
             html: `
                 <h2>
                     Dear ${user.fullName},
-                    Thank you for your recent purchase at AAP! We have received your order and are now processing it.
+                    Thank you for your recent purchase at our store! We have received your order and are now processing it.
                 </h2>
                 <h3> 
                     Here are the details of your order:
                 </h3>
                 <h3> Order details </h3>
                 <ul>
-                    <li> Order ID: ${info.orderId}</li>
                     <li> Order Date: ${new Date().toLocaleDateString()}</li>
                     <li> Ship to: ${info.address}</li>
                     <li> Ship fee: 
-                        ${Math.round(info.shippingCost)}$
+                        ${info.shippingCost} VND
                     </li>
-                    <li> Payment method: ${info.paymentMethod} </li>
-                    <li> Payment result: ${info.paymentResult} </li>
-                    <li> Phone number: ${info.phone} </li>
-                    ${info.state ? `
-                        <li> Card number: ${info.state.number} </li>
-                        <li> Card holder: ${info.state.name} </li>
-                        <li> Expiry date: ${info.state.expiry} </li>
-                        <li> CVC: ${info.state.cvc} </li>
-                    ` : ""}
+                    <li> Phone number: ${info.phoneNumber}</li>
+                    <li> Payment method: Ship COD </li>
                 </ul>
                 <h3> Payment details </h3>
                 <table>
                       <tr>
-                        <th> Brand + Model </th>
+                        <th> Name </th>
                         <th> Quantity </th>
                         <th> Price </th>
+                        <th> Total Price </th>
                       </tr>
                       ${cakes.map(item => `
                         <tr>
-                          <td>${item.brand}${item.model}</td>
+                          <td>${item.name}</td>
                           <td>${item.quantity}</td>
                           <td>${item.price}</td>
+                          <td>${item.total}</td>
                         </tr>
                       `).join('')}
                       <tr>
@@ -158,7 +152,7 @@ export const sendPaymentDetails = async (req, res) => {
                             Total Price:
                         </b></td>
                         <td><b>
-                            $${((cakes.reduce((total, item) => total + item.total, 0)) + Math.round(info.shippingCost)).toLocaleString()}
+                            ${((cakes.reduce((total, item) => total + item.total, 0)) + (info.shippingCost)).toLocaleString()} VND
                         </b></td>
                       </tr>
                 </table>
