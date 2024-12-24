@@ -86,6 +86,24 @@ const Contact = () => {
     const handleInputChange = (e) => {
       setFormData({ ...formData, [e.target.name]: e.target.value });
     };
+    const handleAddProblem = (userID) => {
+      getCake(userID, {
+        onSuccess: (user) => {
+          setFormData({
+            id: user._id,
+            cakeName: cake.cakeName,
+            price: cake.price,
+            description: cake.description,
+            images: cake.images,
+          });
+          setIsOpenEdit(true);
+        },
+        onError: (error) => {
+          console.error("Failed to fetch cake:", error);
+          alert("Could not load cake details.");
+        },
+      });
+    };
 
  
 

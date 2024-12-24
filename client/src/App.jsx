@@ -16,6 +16,7 @@ import AddCake from "./_admin/element/AddCake";
 import AdminLayout from "./_admin/AdminLayout";
 import ForgotPass from "./_auth/ForgotPass";
 import PaymentDetail from "./_cart/element/PaymentDetail";
+import ForgotPassword from "./_auth/ForgotPassword";
 
 const App = () => {
   const {data: authUser, isLoading} = useAuthUser();
@@ -33,7 +34,7 @@ const App = () => {
         <Route path="/productdetail/:id" element={<ProductDetailLayout />} />
         <Route path="/addcake" element={<AddCake />} />
         <Route path="/adminpage" element={<AdminLayout/>} />
-        <Route path="/forgotpass" element={<ForgotPass/>} />
+        <Route path="/forgotpass" element={<ForgotPassword/>} />
         <Route path="/paymentdetail" element={<PaymentDetail/>} />
       </Routes>
     </>

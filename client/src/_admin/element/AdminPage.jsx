@@ -289,6 +289,55 @@ const AdminPage = () => {
     fullName: "",
     email: "",
   });
+  const { data: orders, isLoading: isLoadingOrders } = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => {
+      try {
+        const response = await fetch("/api/order/all");
+        const data = await response.json();
+
+        if (!response.ok) {
+          throw new Error(data.message || "Something went wrong!");
+        }
+        console.log(data);
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+  });
+  const [formDataOrder, setFormDataOrder] = useState({
+    username: "",
+    fullName: "",
+    email: "",
+  });
+  const { mutate: deleteOrder, isPending: isDeletingOrder } = useMutation({
+    mutationFn: async (id) => {
+      try {
+        const res = await fetch(`/api/order/delete/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await res.json();
+
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong");
+        }
+
+        return data;
+      } catch (error) {
+        throw new Error(error);
+      }
+    },
+    onSuccess: () => {
+      toast.success("Order deleted successfully");
+      // invalidate the query to refetch the data
+      queryClient.invalidateQueries({ queryKey: ["orders"] });
+    },
+  });
+
 
   return (
     <section
@@ -301,6 +350,14 @@ const AdminPage = () => {
         <div className="w-auto h-auto flex flex-col items-start">
           {/* Tab Switcher */}
           <div className="flex w-full justify-start items-center py-5 px-20 space-x-[50px] text-gray-600">
+          <p
+              className={`cursor-pointer ${
+                activeTab === "users" ? "text-[#41759B] font-semibold" : ""
+              }`}
+              onClick={() => setActiveTab("users")}
+            >
+              Users
+            </p>
             <p
               className={`cursor-pointer ${
                 activeTab === "products" ? "text-[#41759B] font-semibold" : ""
@@ -311,12 +368,13 @@ const AdminPage = () => {
             </p>
             <p
               className={`cursor-pointer ${
-                activeTab === "users" ? "text-[#41759B] font-semibold" : ""
+                activeTab === "orders" ? "text-[#41759B] font-semibold" : ""
               }`}
-              onClick={() => setActiveTab("users")}
+              onClick={() => setActiveTab("orders")}
             >
-              Users
+              Orders
             </p>
+           
           </div>
         </div>
 
@@ -765,6 +823,77 @@ const AdminPage = () => {
                   {user.isAdmin && (
                     <AiOutlineCheckCircle className="text-green-500 w-5 h-5" />
                   )}
+                </div>
+              </div>
+            ))}
+
+          <div className=" w-full flex items-center  border-t border-gray-300">
+            {" "}
+          </div>
+
+          <Link to="/products">
+            <div className="flex justify-start items-center px-3 py-5 text-[15px] text-[#41759B] ">
+              <IoIosArrowRoundBack className="w-7 h-7 " />
+
+              <p>Back to Product</p>
+            </div>
+          </Link>
+        </div>
+      )}
+      {activeTab === "orders" && (
+        <div className="bg-white w-auto h-auto flex flex-col rounded-[13px] shadow-md items-start">
+          <div className="flex w-full justify-start items-center px-20 py-5 text-[10px] space-x-[50px] text-gray-600">
+            {/* <div className="flex space-x-[50px] items-center"> */}
+            <p className="w-[49px]  ml-3 flex items-center">Name User</p>
+            <p className="w-[65px] flex justify-center">Name Product</p>
+            <p className="w-[90px] flex justify-center">Address</p>
+            <p className="w-[95px] flex justify-center">Phone Number</p>
+            <p className="w-[160px] flex justify-center ">Email</p>
+            <p className="w-[55px] flex justify-center">Total Price</p>
+            
+          </div>
+          {/* </div> */}
+
+          {isLoadingUsers && (
+            <div className="flex justify-center items-center w-full">
+              <TailSpin visible={true} height="50" width="50" color="#4fa94d" />
+            </div>
+          )}
+
+          {orders &&
+            orders.map((order) => (
+              <div
+                key={order._id}
+                className="w-auto h-auto flex items-start px-20 py-3  border-t border-gray-300"
+              >
+           
+                <div className="flex justify-between items-center py-5 text-[13px] space-x-[30px]">
+                  <p className="flex w-[80px] justify-center ">{order.user.fullName ?  (
+                      <p> {order.user.fullName} </p>
+                   ) :  (
+                    <AiOutlineCheckCircle className="text-green-500 w-5 h-5" />
+                  )}</p>
+                    
+                  <p className="w-[60px] text-[10px] text-[#41759B] flex justify-center">
+                    See more
+                  </p>
+                  <p className="w-[150px] truncate">{order.shippingAddress}</p>
+                  <p className="w-[80px] ">{order.phoneNumber}</p>
+                  <p className="w-[200px]  truncate">{order.email}</p>
+                  <p className="w-[50px] ">{order.totalPrice}VND</p>
+                  <div class name="flex w-[50px] items-center ml-4 ">
+                    {isDeletingOrder ? (
+                        <p>Loading...</p>
+                      ) : (
+                        <CiTrash
+                          className=" cursor-pointer ml-10 text-red-500 w-5 h-5"
+                          onClick={() =>
+                            // console.log(product._id)
+                            deleteOrder(order._id)
+                          }
+                        />
+                      )}
+                      </div>
                 </div>
               </div>
             ))}
