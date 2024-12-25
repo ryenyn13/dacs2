@@ -20,7 +20,8 @@ import { TailSpin } from "react-loader-spinner";
 import { FaSearch } from "react-icons/fa";
 
 const Products = () => {
-  
+  const [searchTerm, setSearchTerm] = useState("");
+
   // useEffect(() => {
   //   const slides = document.querySelectorAll(".slide");
   //   let currentIndex = 0;
@@ -109,16 +110,13 @@ const Products = () => {
     setLoadingProductId(productId);
     addToCart(productId);
   };
-
-  const handleSearch = async (searchTerm) => {
-    try {
-      const response = await axios.get(`/api/cake/?search=${searchTerm}`);
-      setCakes(response.data);
-      console.log(response.data);
-    } catch (error) {
-      console.error("Error fetching cakes:", error);
-    }
+  const handleSearch = (e) => {
+    setSearchTerm(e.target.value);
   };
+  const filteredProducts = products?.filter((product) =>
+    product.cakeName.toLowerCase().includes(searchTerm.toLowerCase()),
+  );  
+
   return (
     <section className="w-full bg-white">
       <Toaster position="top-center" reverseOrder={false}></Toaster>
@@ -133,8 +131,8 @@ const Products = () => {
           <p>PASTRY</p>
           <p>OTHER</p>
         </div>
-        <div className="mt-1  flex items-center space-x-1">
-          <div className="relative  flex justify-center items-center w-full">
+        <div className=" mt-1 flex items-center space-x-2">
+          <div className="relative -ml-10 flex justify-center items-center w-full">
             <label
               htmlFor="search"
               className="block text-sm font-medium text-gray-700 mb-1"
@@ -142,20 +140,19 @@ const Products = () => {
             <input
               type="text"
               name="search"
-              placeholder="     Search..."
-              // onChange={handleSearch}
-              // value={SearchTerm}
-            
+              placeholder=" Search..."
+              value={searchTerm}
+              onChange={handleSearch}
               className="w-full px-3 py-1.5 ml-1 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-0.5 focus:ring-[#c4def0] focus:border-[#bcd2e2]"
-            
             />
-            <FaSearch
-              className=" w-4 h-4 absolute left-3 text-gray-400 cursor-pointer"
-              title="Search"
-            />
+             
           </div>
           {/* <p className="text-[15px] font-bold  text-[#65594C]">Filter</p>
           <MdArrowDropDown className="w-5 h-5" /> */}
+         <FaSearch
+              className=" w-5 h-5  text-gray-400 cursor-pointer"
+              title="Search"
+            />
         </div>
       </div>
       <div className="space-y-2">
@@ -175,8 +172,8 @@ const Products = () => {
                 />
               </div>
             )}
-            {products &&
-              products.map((product) => (
+            {filteredProducts &&
+              filteredProducts.map((product) => (
                 <Link to={`/productdetail/${product._id}`}>
                   <div className=" w-[220px] h-auto">
                     <div className="w-full flex flex-col items-center mb-4">

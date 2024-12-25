@@ -305,7 +305,7 @@ const Cart = () => {
             </div>
           </div>
 
-          <div className="bg-slate-100 w-[300px] h-auto  rounded-e-[13px] shadow-md items-start">
+          <div className="bg-slate-100 w-[300px] h-auto pb-5 rounded-e-[13px] shadow-md items-start">
             <p className="mt-6 ml-6 text-[20px] font-bold text-black">
               Summary
             </p>

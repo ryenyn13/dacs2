@@ -112,6 +112,20 @@ export const deleteCart = async (req, res) => {
     }
 }
 
+// export const findUser = async (req, res) => {
+//   try {
+//       const searchTerm = req.query.search.toLowerCase(); 
+//       const users = await User.find();
+
+//       const filteredUsers = cakes.filter(cake => 
+//           cake.cakeName.toLowerCase().includes(searchTerm)
+//       );
+
+//       res.status(200).json(filteredCakes);
+//   } catch (error) {
+//       res.status(500).json({ error: 'Something went wrong' });
+//   }
+// }
 export const sendPaymentDetails = async (req, res) => {
     try {
         const userId = req.user._id;
@@ -139,7 +153,7 @@ export const sendPaymentDetails = async (req, res) => {
         });
 
         const mailOptions = {
-            from: "anvnh",
+            from: "Yennhi",
             to: email,
             subject: "Payment Details",
             html: `

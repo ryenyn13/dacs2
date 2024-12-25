@@ -58,6 +58,9 @@ const BestSellers = () => {
     if (activeIndex > 0) {
       setActiveIndex(activeIndex - 1);
     }
+    else {
+      setActiveIndex(4);
+    }
   };
 
   const scrollRight = () => {
